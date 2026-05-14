@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evangelho Místico Cristão — Jon Padilha</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@300;400;600;700&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+:root{
+  --gold:#c9a84c;
+  --gold-l:#e8c97a;
+  --gold-d:#7a5e28;
+  --gold-pale:#f5e9c8;
+  --dark:#040608;
+  --dark2:#080c14;
+  --dark3:#0c1020;
+  --ink:#1a1408;
+  --text:#d4c49a;
+  --text2:#9a8a64;
+  --text3:#5a4e34;
+  --white:#f7f2e8;
+  --blue-dark:#060d1e;
+}
+
+body{
+  background:var(--dark);
+  color:var(--text);
+  font-family:'Cormorant Garamond',Georgia,serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+#cursor{
+  width:12px;height:12px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s,height 0.2s,background 0.2s;
+  mix-blend-mode:screen;
+}
+#cursor-trail{
+  width:4px;height:4px;
+  background:var(--gold-d);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:left 0.12s,top 0.12s;
+}
+body:hover #cursor{background:rgba(201,168,76,0.1);}
+
+/* CANVAS */
+#bg-canvas{
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* PAGES */
+.page{
+  display:none;
+  min-height:100vh;
+  position:relative;
+  z-index:1;
+}
+.page.active{display:block;}
+
+/* ═══════════════════════════════════
+   PAGE 0 — CAPA / HOME
+   ═══════════════════════════════════ */
+#p-home{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, #0d1830 0%, #040608 55%),
+             radial-gradient(ellipse 50% 40% at 50% 80%, #0a0d1a 0%, transparent 60%);
+  overflow:hidden;
+  padding:0;
+}
+
+/* spiral ring bg */
+.home-spiral{
+  position:absolute;
+  width:700px;height:700px;
+  top:-180px;left:50%;transform:translateX(-50%);
+  border-radius:50%;
+  background:conic-gradient(from 0deg, transparent 80%, rgba(201,168,76,0.03) 100%);
+  border:1px solid rgba(201,168,76,0.04);
+  animation:spiralSpin 40s linear infinite;
+}
+.home-spiral::before{
+  content:'';position:absolute;inset:40px;
+  border-radius:50%;
+  border:1px solid rgba(201,168,76,0.06);
+  animation:spiralSpin 30s linear infinite reverse;
+}
+.home-spiral::after{
+  content:'';position:absolute;inset:100px;
+  border-radius:50%;
+  border:1px solid rgba(201,168,76,0.08);
+  animation:spiralSpin 20s linear infinite;
+}
+@keyframes spiralSpin{to{transform:rotate(360deg);}}
+
+.home-glow{
+  position:absolute;
+  width:800px;height:800px;
+  top:-400px;left:50%;transform:translateX(-50%);
+  background:radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 65%);
+  animation:glowPulse 5s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{opacity:0.6;transform:translateX(-50%) scale(1);}
+  50%{opacity:1;transform:translateX(-50%) scale(1.08);}
+}
+
+/* ARCH portal bottom */
+.home-arch{
+  position:absolute;
+  bottom:0;left:50%;transform:translateX(-50%);
+  width:280px;height:420px;
+  border:1px solid rgba(201,168,76,0.12);
+  border-bottom:none;
+  border-radius:140px 140px 0 0;
+  background:linear-gradient(to top,
+    rgba(255,180,50,0.12) 0%,
+    rgba(201,168,76,0.04) 40%,
+    transparent 70%);
+  animation:archGlow 4s ease-in-out infinite;
+}
+@keyframes archGlow{
+  0%,100%{box-shadow:inset 0 0 60px rgba(255,180,50,0.06), 0 0 80px rgba(255,180,50,0.06);}
+  50%{box-shadow:inset 0 0 100px rgba(255,180,50,0.14), 0 0 140px rgba(255,180,50,0.12);}
+}
+.home-arch-inner{
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(201,168,76,0.08);
+  border-bottom:none;
+  border-radius:128px 128px 0 0;
+}
+
+/* figure walking */
+.home-figure{
+  position:absolute;
+  bottom:60px;left:50%;transform:translateX(-50%);
+  width:28px;height:58px;
+  opacity:0.7;
+  animation:figureFloat 6s ease-in-out infinite;
+}
+.home-figure-body{
+  width:12px;height:28px;
+  background:linear-gradient(to bottom, rgba(255,200,80,0.9), rgba(200,150,40,0.4));
+  border-radius:6px 6px 2px 2px;
+  margin:0 auto;
+}
+.home-figure-head{
+  width:10px;height:10px;
+  background:rgba(255,220,120,0.9);
+  border-radius:50%;
+  margin:0 auto 2px;
+  box-shadow:0 0 12px rgba(255,200,80,0.8);
+}
+.home-figure-legs{
+  display:flex;gap:4px;justify-content:center;margin-top:2px;
+}
+.home-figure-leg{
+  width:4px;height:18px;
+  background:linear-gradient(to bottom,rgba(200,150,40,0.6),transparent);
+  border-radius:0 0 3px 3px;
+}
+@keyframes figureFloat{
+  0%,100%{transform:translateX(-50%) translateY(0);}
+  50%{transform:translateX(-50%) translateY(-8px);}
+}
+
+.home-light-beam{
+  position:absolute;
+  bottom:0;left:50%;transform:translateX(-50%);
+  width:120px;height:450px;
+  background:linear-gradient(to top,
+    rgba(255,200,80,0.18) 0%,
+    rgba(255,180,60,0.06) 50%,
+    transparent 100%);
+  filter:blur(20px);
+  animation:beamPulse 4s ease-in-out infinite;
+}
+@keyframes beamPulse{
+  0%,100%{opacity:0.6;width:100px;}
+  50%{opacity:1;width:160px;}
+}
+
+/* HOME CONTENT */
+.home-emc{
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:8px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-top:52px;
+  margin-bottom:48px;
+  position:relative;z-index:2;
+  animation:fadeUp 1.2s ease both;
+}
+.home-emc sup{font-size:9px;letter-spacing:2px;}
+
+/* LEFT COLUMN */
+.home-left{
+  position:absolute;
+  left:clamp(16px,5vw,80px);
+  top:50%;transform:translateY(-40%);
+  z-index:2;
+  max-width:200px;
+  animation:fadeUp 1.4s 0.2s ease both;
+}
+.home-left-intro{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  line-height:1.8;
+  margin-bottom:20px;
+}
+.home-left-sub{
+  font-family:'IM Fell English',serif;
+  font-size:12px;
+  color:var(--text3);
+  line-height:1.7;
+  font-style:italic;
+  margin-bottom:20px;
+}
+.home-phenomena{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:16px;
+}
+.phenom-item{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--gold);
+  text-transform:uppercase;
+  opacity:0;
+  animation:fadeUp 0.6s ease forwards;
+}
+.phenom-item:nth-child(1){animation-delay:0.8s;}
+.phenom-item:nth-child(2){animation-delay:1.0s;}
+.phenom-item:nth-child(3){animation-delay:1.2s;}
+.phenom-item:nth-child(4){animation-delay:1.4s;}
+.phenom-item:nth-child(5){animation-delay:1.6s;}
+.phenom-icon{font-size:13px;width:16px;text-align:center;}
+.home-left-note{
+  font-size:10px;
+  color:var(--text3);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  line-height:1.6;
+  margin-top:8px;
+}
+.home-left-note b{color:var(--gold);font-style:normal;}
+
+/* TITLE */
+.home-title-block{
+  position:relative;z-index:2;
+  text-align:center;
+  padding:0 20px;
+  animation:fadeUp 1s 0.1s ease both;
+}
+.home-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(42px,9vw,96px);
+  color:var(--gold-l);
+  line-height:1.0;
+  letter-spacing:2px;
+  text-shadow:0 0 80px rgba(201,168,76,0.4), 0 2px 0 rgba(0,0,0,0.8);
+  margin-bottom:6px;
+}
+.home-title-line{
+  display:block;
+  animation:revealLine 0.8s ease both;
+}
+.home-title-line:nth-child(1){animation-delay:0.3s;}
+.home-title-line:nth-child(2){animation-delay:0.5s;}
+.home-title-line:nth-child(3){animation-delay:0.7s;}
+@keyframes revealLine{
+  from{opacity:0;letter-spacing:20px;}
+  to{opacity:1;letter-spacing:2px;}
+}
+.home-tagline{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(11px,2vw,14px);
+  letter-spacing:4px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-top:14px;
+  font-style:italic;
+}
+
+/* RIGHT COLUMN */
+.home-right{
+  position:absolute;
+  right:clamp(16px,5vw,80px);
+  top:50%;transform:translateY(-30%);
+  z-index:2;
+  max-width:190px;
+  text-align:left;
+  animation:fadeUp 1.4s 0.3s ease both;
+}
+.home-right p{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'Cinzel',serif;
+  color:var(--text3);
+  line-height:1.8;
+  margin-bottom:10px;
+}
+.home-right p b{color:var(--gold);}
+.home-right-question{
+  border:1px solid rgba(201,168,76,0.25);
+  padding:10px 14px;
+  margin-top:14px;
+  background:rgba(201,168,76,0.04);
+}
+.home-right-question p{
+  font-family:'IM Fell English',serif;
+  text-transform:none;
+  letter-spacing:1px;
+  font-size:12px;
+  color:var(--gold-l);
+  font-style:italic;
+  margin:0;
+}
+
+/* AUTHOR */
+.home-author{
+  font-family:'Cinzel',serif;
+  font-size:clamp(14px,3vw,20px);
+  letter-spacing:8px;
+  color:var(--gold);
+  text-transform:uppercase;
+  position:relative;z-index:2;
+  margin-top:24px;
+  animation:fadeUp 1.6s 0.5s ease both;
+}
+
+/* BOTTOM TEXT */
+.home-bottom-text{
+  position:relative;z-index:2;
+  text-align:center;
+  padding:0 clamp(16px,8vw,200px);
+  margin-top:32px;
+  animation:fadeUp 1.4s 0.6s ease both;
+}
+.home-bottom-text p{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(13px,2.5vw,17px);
+  line-height:1.7;
+  color:var(--text2);
+  font-style:italic;
+}
+.home-bottom-text b{color:var(--gold-l);font-style:normal;}
+
+/* ENTER BUTTON */
+.home-enter{
+  position:relative;z-index:2;
+  margin:40px auto 80px;
+  animation:fadeUp 1.2s 1s ease both;
+}
+.btn-enter{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:8px;
+  text-transform:uppercase;
+  color:var(--ink);
+  background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 50%,#a07830 100%);
+  border:none;
+  padding:18px 60px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform 0.3s,box-shadow 0.3s;
+  clip-path:polygon(8px 0%, calc(100% - 8px) 0%, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0% calc(100% - 8px), 0% 8px);
+}
+.btn-enter::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  transform:translateX(-100%);
+  transition:transform 0.6s;
+}
+.btn-enter:hover::before{transform:translateX(100%);}
+.btn-enter:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(201,168,76,0.5),0 0 60px rgba(201,168,76,0.2);
+}
+
+
+/* ═══════════════════════════════════
+   PAGE 1 — LIVRO 5 / INTRO
+   ═══════════════════════════════════ */
+#p-intro{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 10%, #0e1830 0%, transparent 60%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, #0a1020 0%, transparent 60%),
+    var(--dark2);
+  overflow:hidden;
+}
+
+.intro-heavenly-gate{
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  width:300px;height:500px;
+  background:radial-gradient(ellipse 50% 60% at 50% 0%, rgba(255,200,80,0.15) 0%, transparent 70%);
+  filter:blur(10px);
+  pointer-events:none;
+}
+.intro-rays{
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:conic-gradient(from 180deg at 50% 0%,
+    transparent 0deg,rgba(201,168,76,0.04) 10deg,transparent 20deg,
+    rgba(201,168,76,0.04) 30deg,transparent 40deg,rgba(201,168,76,0.04) 50deg,
+    transparent 60deg,rgba(201,168,76,0.04) 70deg,transparent 80deg,
+    rgba(201,168,76,0.04) 90deg,transparent 100deg,rgba(201,168,76,0.04) 110deg,
+    transparent 120deg,rgba(201,168,76,0.04) 130deg,transparent 140deg,
+    rgba(201,168,76,0.04) 150deg,transparent 160deg,rgba(201,168,76,0.04) 170deg,
+    transparent 180deg);
+  animation:raysRotate 20s linear infinite;
+  pointer-events:none;
+}
+@keyframes raysRotate{to{transform:translateX(-50%) rotate(360deg);}}
+
+.intro-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  max-width:1000px;
+  margin:0 auto;
+  padding-top:80px;
+  min-height:100vh;
+  position:relative;
+  z-index:2;
+}
+
+.intro-left{
+  padding:60px 40px 60px 60px;
+  border-right:1px solid rgba(201,168,76,0.1);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.intro-badge{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:5px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.intro-reading-text{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(18px,3vw,26px);
+  color:var(--gold-pale);
+  line-height:1.5;
+  font-style:italic;
+  margin-bottom:32px;
+}
+.intro-prev-books{
+  margin-bottom:32px;
+}
+.intro-prev-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:4px;
+  color:var(--text3);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.book-icons{
+  display:flex;gap:8px;
+}
+.book-icon{
+  width:38px;height:48px;
+  border:1px solid rgba(201,168,76,0.2);
+  background:rgba(201,168,76,0.04);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;
+  cursor:pointer;
+  transition:all 0.3s;
+  position:relative;
+}
+.book-icon:hover{
+  border-color:var(--gold);
+  background:rgba(201,168,76,0.1);
+  transform:translateY(-2px);
+}
+.book-icon.current{
+  border-color:var(--gold);
+  background:rgba(201,168,76,0.12);
+  box-shadow:0 0 20px rgba(201,168,76,0.2);
+}
+.book-num{font-size:8px;letter-spacing:2px;color:var(--text3);}
+.book-num-big{font-size:16px;font-weight:700;color:var(--gold);}
+
+.intro-p{
+  font-size:13px;
+  line-height:1.8;
+  color:var(--text2);
+  font-style:italic;
+}
+
+.intro-right{
+  padding:60px 60px 60px 40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:40px;
+}
+.intro-block-main{
+  position:relative;
+}
+.intro-block-main::before{
+  content:'';
+  position:absolute;
+  left:-20px;top:0;bottom:0;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+}
+.intro-big-claim{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(18px,3vw,26px);
+  color:var(--gold);
+  line-height:1.3;
+  margin-bottom:12px;
+}
+.intro-big-sub{
+  font-size:14px;
+  line-height:1.7;
+  color:var(--text2);
+}
+.intro-big-sub b{color:var(--gold-l);}
+
+.intro-souls{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(15px,2.5vw,20px);
+  color:var(--text);
+  font-style:italic;
+  line-height:1.5;
+}
+
+.intro-awakening{
+  border-top:1px solid rgba(201,168,76,0.15);
+  padding-top:32px;
+}
+.intro-awakening-main{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(20px,3.5vw,30px);
+  color:var(--gold-l);
+  line-height:1.2;
+}
+.intro-awakening-main span{font-size:0.7em;color:var(--gold);}
+
+
+/* ═══════════════════════════════════
+   PAGE INDEX
+   ═══════════════════════════════════ */
+#p-index{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(10,20,50,0.8), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(30,15,5,0.6), transparent),
+    var(--dark3);
+  padding:100px 40px 80px;
+}
+.index-container{
+  max-width:800px;
+  margin:0 auto;
+}
+.index-header{
+  text-align:center;
+  margin-bottom:60px;
+}
+.index-header-label{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:6px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+.index-header-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(28px,5vw,48px);
+  color:var(--gold);
+}
+.index-divider{
+  width:200px;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  margin:20px auto;
+}
+.index-chapters{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.index-chapter{
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  border-bottom:1px solid rgba(201,168,76,0.08);
+  cursor:pointer;
+  padding:24px 0;
+  transition:all 0.4s;
+  position:relative;
+  overflow:hidden;
+}
+.index-chapter::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(to right,rgba(201,168,76,0.06),transparent);
+  transition:width 0.4s;
+}
+.index-chapter:hover::before{width:100%;}
+.index-chapter:hover .index-ch-title{color:var(--gold-l);}
+.index-chapter:hover .index-ch-num{color:var(--gold);}
+
+.index-ch-num{
+  font-family:'Cinzel Decorative',serif;
+  font-size:48px;
+  color:var(--text3);
+  line-height:1;
+  width:100px;
+  text-align:center;
+  flex-shrink:0;
+  transition:color 0.4s;
+  padding-right:16px;
+}
+.index-ch-content{
+  flex:1;
+  padding-left:24px;
+  border-left:1px solid rgba(201,168,76,0.12);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.index-ch-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:5px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.index-ch-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(16px,3vw,22px);
+  color:var(--text);
+  letter-spacing:1px;
+  margin-bottom:8px;
+  transition:color 0.4s;
+}
+.index-ch-desc{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:var(--text3);
+  font-style:italic;
+  line-height:1.5;
+}
+.index-ch-arrow{
+  display:flex;align-items:center;
+  padding:0 20px;
+  color:var(--gold-d);
+  font-size:24px;
+  transition:transform 0.3s,color 0.3s;
+}
+.index-chapter:hover .index-ch-arrow{
+  transform:translateX(6px);
+  color:var(--gold);
+}
+
+
+/* ═══════════════════════════════════
+   CHAPTER PAGES
+   ═══════════════════════════════════ */
+.chap-page{
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+/* CH1 — A BÍBLIA MÍSTICA */
+#p-ch1{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 20%, #0d1525 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, #150a05 0%, transparent 50%),
+    var(--dark);
+}
+.ch1-bg-runes{
+  position:absolute;
+  right:-60px;top:80px;
+  font-size:12px;
+  line-height:2;
+  color:rgba(201,168,76,0.06);
+  pointer-events:none;
+  writing-mode:vertical-rl;
+  letter-spacing:8px;
+}
+
+/* CH2 — JACÓ E JOSÉ */
+#p-ch2{
+  background:
+    radial-gradient(ellipse 80% 50% at 30% 30%, #0a1020 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, #120a05 0%, transparent 50%),
+    var(--dark);
+}
+
+/* CH3 — UMA NOITE SONHEI */
+#p-ch3{
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 15%, #080d20 0%, transparent 50%),
+    radial-gradient(ellipse 70% 40% at 20% 80%, #100810 0%, transparent 55%),
+    var(--dark);
+}
+
+/* CH4 — NEVILLE */
+#p-ch4{
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 10%, #0f1428 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, #10080a 0%, transparent 50%),
+    var(--dark);
+}
+
+/* ── CHAPTER LAYOUT ── */
+.chap-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:100px 40px 60px;
+  position:relative;
+  z-index:2;
+}
+.chap-header{
+  text-align:center;
+  margin-bottom:60px;
+}
+.chap-num{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:6px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.chap-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(28px,6vw,64px);
+  color:var(--gold-l);
+  line-height:1.1;
+  text-shadow:0 0 60px rgba(201,168,76,0.3);
+}
+.chap-star{
+  color:var(--gold);
+  font-size:14px;
+  margin:16px auto;
+  display:block;
+  text-align:center;
+}
+.chap-divider{
+  width:180px;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  margin:0 auto 48px;
+}
+
+/* CHAP BODY — 2 COLUMN */
+.chap-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:start;
+}
+.chap-body.single{
+  grid-template-columns:1fr;
+  max-width:700px;
+  margin:0 auto;
+}
+.chap-body.wide{
+  grid-template-columns:1fr 1.2fr;
+}
+.chap-body.flip{
+  grid-template-columns:1.2fr 1fr;
+}
+
+/* text blocks */
+.text-block{
+  position:relative;
+}
+.text-p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(15px,2vw,19px);
+  line-height:1.85;
+  color:var(--text);
+  margin-bottom:24px;
+}
+.text-p.italic{font-style:italic;color:var(--text2);}
+.text-em{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(17px,2.5vw,22px);
+  color:var(--gold-l);
+  line-height:1.5;
+  font-style:italic;
+  margin-bottom:24px;
+}
+.text-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:5px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+
+/* key box */
+.key-box{
+  border:1px solid rgba(201,168,76,0.2);
+  background:rgba(201,168,76,0.04);
+  padding:20px 24px;
+  margin-bottom:24px;
+  position:relative;
+}
+.key-box::before{
+  content:'🗝';
+  position:absolute;
+  left:-14px;top:-14px;
+  font-size:20px;
+  background:var(--dark2);
+  padding:4px;
+}
+.key-title{
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  color:var(--gold);
+  letter-spacing:2px;
+  margin-bottom:10px;
+}
+.key-text{
+  font-size:14px;
+  line-height:1.7;
+  color:var(--text2);
+  font-style:italic;
+}
+
+/* scripture box */
+.scripture{
+  border-left:2px solid var(--gold-d);
+  padding:16px 20px;
+  margin-bottom:20px;
+  position:relative;
+}
+.scripture-ref{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:4px;
+  color:var(--gold-d);
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.scripture-icon{font-size:16px;}
+.scripture-text{
+  font-family:'IM Fell English',serif;
+  font-size:clamp(14px,2vw,17px);
+  font-style:italic;
+  color:var(--gold-pale);
+  line-height:1.6;
+}
+
+/* scene card */
+.scene-card{
+  border:1px solid rgba(201,168,76,0.12);
+  background:rgba(201,168,76,0.03);
+  padding:24px;
+  margin-bottom:20px;
+  position:relative;
+}
+.scene-title{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.scene-text{
+  font-size:15px;
+  line-height:1.7;
+  color:var(--text2);
+  font-style:italic;
+}
+
+/* cosmic revelation */
+.cosmic-box{
+  background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,rgba(100,80,30,0.04) 100%);
+  border:1px solid rgba(201,168,76,0.15);
+  border-radius:2px;
+  padding:32px;
+  text-align:center;
+  margin:32px 0;
+}
+.cosmic-text{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(14px,2.5vw,20px);
+  color:var(--gold-l);
+  line-height:1.4;
+}
+.cosmic-sub{
+  font-family:'IM Fell English',serif;
+  font-size:15px;
+  color:var(--text2);
+  font-style:italic;
+  margin-top:12px;
+}
+
+/* four dreams grid */
+.four-dreams{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin:24px 0;
+}
+.dream-card{
+  border:1px solid rgba(201,168,76,0.15);
+  background:rgba(201,168,76,0.03);
+  padding:20px 16px;
+  text-align:center;
+  position:relative;
+  transition:all 0.3s;
+}
+.dream-card:hover{
+  border-color:rgba(201,168,76,0.3);
+  background:rgba(201,168,76,0.07);
+  transform:translateY(-2px);
+}
+.dream-num{
+  font-family:'Cinzel Decorative',serif;
+  font-size:32px;
+  color:var(--gold-d);
+  display:block;
+  line-height:1;
+  margin-bottom:8px;
+}
+.dream-icon{font-size:28px;display:block;margin-bottom:8px;}
+.dream-title{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.dream-desc{
+  font-size:12px;
+  color:var(--text3);
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* timeline */
+.timeline{
+  position:relative;
+  margin:20px 0;
+}
+.timeline-line{
+  position:absolute;
+  left:50%;top:20px;bottom:20px;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,var(--gold-d),var(--gold-d),transparent);
+  transform:translateX(-50%);
+}
+.timeline-items{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  align-items:center;
+}
+.timeline-item{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:12px 0;
+  width:100%;
+}
+.timeline-item:nth-child(odd){flex-direction:row;}
+.timeline-item:nth-child(even){flex-direction:row-reverse;}
+.timeline-dot{
+  width:12px;height:12px;
+  border-radius:50%;
+  background:var(--gold);
+  flex-shrink:0;
+  box-shadow:0 0 12px rgba(201,168,76,0.5);
+  position:relative;z-index:1;
+}
+.timeline-content{
+  flex:1;
+  font-size:13px;
+  color:var(--text2);
+  font-style:italic;
+}
+.timeline-label{
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  color:var(--gold);
+  display:block;
+}
+
+/* GLOW VISUAL ELEMENT */
+.glow-orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(60px);
+  pointer-events:none;
+  z-index:0;
+}
+.glow-gold{background:radial-gradient(circle,rgba(201,168,76,0.12),transparent);}
+.glow-blue{background:radial-gradient(circle,rgba(60,100,200,0.08),transparent);}
+
+/* spiral decorative */
+.spiral-deco{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(201,168,76,0.06);
+  pointer-events:none;
+  animation:spiralSpin 25s linear infinite;
+}
+
+/* ── BOTTOM NAV ── */
+.chap-footer{
+  position:relative;z-index:10;
+  margin-top:60px;
+  padding:40px;
+  border-top:1px solid rgba(201,168,76,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.footer-brand{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:5px;
+  color:var(--text3);
+  text-transform:uppercase;
+}
+.footer-nav{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+.btn-nav{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  background:transparent;
+  border:1px solid rgba(201,168,76,0.25);
+  color:var(--gold);
+  padding:10px 24px;
+  cursor:pointer;
+  transition:all 0.3s;
+  clip-path:polygon(6px 0%,calc(100% - 6px) 0%,100% 6px,100% calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,0% calc(100% - 6px),0% 6px);
+}
+.btn-nav:hover{
+  background:rgba(201,168,76,0.1);
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(201,168,76,0.15);
+}
+.btn-nav.primary{
+  background:linear-gradient(135deg,var(--gold-l),var(--gold));
+  color:var(--ink);
+  border-color:transparent;
+  font-weight:700;
+}
+.btn-nav.primary:hover{
+  box-shadow:0 6px 24px rgba(201,168,76,0.5);
+  transform:translateY(-1px);
+}
+
+/* progress bar */
+.chap-progress{
+  display:flex;gap:6px;align-items:center;
+}
+.prog-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--text3);
+  cursor:pointer;transition:all 0.3s;
+}
+.prog-dot.active{
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+  transform:scale(1.5);
+}
+.prog-dot:hover{background:var(--gold-d);}
+
+/* TOP FIXED NAV */
+.top-nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 32px;
+  background:rgba(4,6,8,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.nav-brand{
+  font-family:'Cinzel Decorative',serif;
+  font-size:14px;
+  color:var(--gold);
+  cursor:pointer;
+  letter-spacing:2px;
+  transition:color 0.3s;
+}
+.nav-brand:hover{color:var(--gold-l);}
+.nav-links{
+  display:flex;gap:6px;align-items:center;
+}
+.nav-link{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--text3);
+  text-decoration:none;
+  text-transform:uppercase;
+  padding:6px 10px;
+  cursor:pointer;
+  transition:color 0.3s;
+  white-space:nowrap;
+}
+.nav-link:hover,.nav-link.active{color:var(--gold);}
+.nav-sep{color:var(--text3);font-size:8px;}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .chap-body,.intro-grid{grid-template-columns:1fr;}
+  .home-left,.home-right{display:none;}
+  .chap-inner{padding:80px 20px 40px;}
+  .four-dreams{grid-template-columns:1fr;}
+  .intro-left,.intro-right{padding:40px 20px;}
+  .top-nav{padding:12px 16px;}
+  .nav-links .nav-link:not(.always){display:none;}
+  .footer-brand{display:none;}
+  .chap-footer{justify-content:center;}
+  .index-ch-num{font-size:32px;width:60px;}
+  .chap-title{font-size:clamp(24px,7vw,48px);}
+}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--dark);}
+::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <span class="nav-brand" onclick="goTo('home')">Emc³</span>
+  <div class="nav-links">
+    <span class="nav-link always active" id="nl-home" onclick="goTo('home')">Início</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-intro" onclick="goTo('intro')">Livro 5</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-index" onclick="goTo('index')">Índice</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-ch1" onclick="goTo('ch1')">Cap. I</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-ch2" onclick="goTo('ch2')">Cap. II</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-ch3" onclick="goTo('ch3')">Cap. III</span>
+    <span class="nav-sep">·</span>
+    <span class="nav-link" id="nl-ch4" onclick="goTo('ch4')">Cap. IV</span>
+  </div>
+</nav>
+
+<!-- ═══ PAGE: HOME ═══ -->
+<div id="page-home" class="page active" style="display:flex;flex-direction:column;align-items:center;">
+  <div class="home-spiral"></div>
+  <div class="home-glow"></div>
+  <div class="home-arch"><div class="home-arch-inner"></div></div>
+  <div class="home-light-beam"></div>
+  <div class="home-figure">
+    <div class="home-figure-head"></div>
+    <div class="home-figure-body"></div>
+    <div class="home-figure-legs">
+      <div class="home-figure-leg"></div>
+      <div class="home-figure-leg"></div>
+    </div>
+  </div>
+
+  <p class="home-emc">Emc<sup>3</sup></p>
+
+  <!-- LEFT -->
+  <div class="home-left">
+    <p class="home-left-intro">Essa vida que você está vivendo agora...</p>
+    <p class="home-left-sub">Talvez ela já tenha sido sonhada infinitas vezes pela própria consciência.</p>
+    <p class="home-left-intro" style="margin-top:8px;">Talvez seja por isso que existem:</p>
+    <div class="home-phenomena">
+      <div class="phenom-item"><span class="phenom-icon">👁</span> Déjà Vus</div>
+      <div class="phenom-item"><span class="phenom-icon">☁️</span> Sonhos</div>
+      <div class="phenom-item"><span class="phenom-icon">🌀</span> Premonições</div>
+      <div class="phenom-item"><span class="phenom-icon">📖</span> Profecias</div>
+      <div class="phenom-item"><span class="phenom-icon">✦</span> Oráculos</div>
+    </div>
+    <p class="home-left-note">Não como "visões do futuro", mas como <b>memórias atravessando o tempo.</b></p>
+  </div>
+
+  <!-- TITLE -->
+  <div class="home-title-block">
+    <h1 class="home-title">
+      <span class="home-title-line">Evangelho</span>
+      <span class="home-title-line">Místico</span>
+      <span class="home-title-line">Cristão</span>
+    </h1>
+    <p class="home-tagline">Tudo já foi sonhado pela consciência divina.</p>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="home-right">
+    <p>Coletivamente, como humanidade.</p>
+    <p>Individualmente, nos dramas psicológicos de cada pessoa.</p>
+    <p>Mudam os rostos. Mudam os corpos. Mudam os atores.<br><b>Mas o roteiro continua o mesmo.</b></p>
+    <div class="home-right-question">
+      <p>Como saber se você está acordado agora?</p>
+    </div>
+  </div>
+
+  <!-- AUTHOR -->
+  <p class="home-author">Jon Padilha</p>
+
+  <!-- BOTTOM TEXT -->
+  <div class="home-bottom-text">
+    <p>Por isso a <b>Redenção é Agora.</b> Não redenção como culpa. Não como pecado. Mas como <b>Memória</b>.<br>Lembrar quem você é antes do personagem.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="home-enter">
+    <button class="btn-enter" onclick="goTo('intro')">Entrar</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE: INTRO ═══ -->
+<div id="page-intro" class="page">
+  <div class="intro-heavenly-gate"></div>
+  <div class="intro-rays"></div>
+
+  <div class="intro-grid">
+    <div class="intro-left">
+      <p class="intro-badge">Livro 5 — Evangelho Místico Cristão</p>
+      <p class="intro-reading-text">Se você está lendo esse livro, significa que está <em>acordado</em> dentro do sonho da vida.</p>
+      <div class="intro-prev-books">
+        <p class="intro-prev-label">Leia também os livros anteriores</p>
+        <div class="book-icons">
+          <div class="book-icon"><span class="book-num">LIVRO</span><span class="book-num-big">1</span></div>
+          <div class="book-icon"><span class="book-num">LIVRO</span><span class="book-num-big">2</span></div>
+          <div class="book-icon"><span class="book-num">LIVRO</span><span class="book-num-big">3</span></div>
+          <div class="book-icon"><span class="book-num">LIVRO</span><span class="book-num-big">4</span></div>
+          <div class="book-icon current"><span class="book-num">LIVRO</span><span class="book-num-big">5</span></div>
+        </div>
+      </div>
+      <p class="intro-p">Leia os livros anteriores para ter a percepção completa da memória que retornou a nós.</p>
+    </div>
+
+    <div class="intro-right">
+      <div class="intro-block-main">
+        <p class="intro-big-claim">Somos os 144 mil do Apocalipse</p>
+        <p class="intro-big-sub">não por mérito intelectual, moral ou espiritual,<br><b>somente pela graça.</b></p>
+      </div>
+      <p class="intro-souls">Somos almas que estão há muitos anos sonhando esse mundo estranho.</p>
+      <div class="intro-awakening">
+        <p class="intro-big-sub" style="margin-bottom:16px;">Mas já que todo sonho tem fim,</p>
+        <p class="intro-awakening-main">nosso Despertar para a eternidade<br><span>está próximo.</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chap-footer">
+    <span class="footer-brand">Emc³ · Jon Padilha</span>
+    <div class="chap-progress">
+      <div class="prog-dot active" onclick="goTo('intro')"></div>
+      <div class="prog-dot" onclick="goTo('ch1')"></div>
+      <div class="prog-dot" onclick="goTo('ch2')"></div>
+      <div class="prog-dot" onclick="goTo('ch3')"></div>
+      <div class="prog-dot" onclick="goTo('ch4')"></div>
+    </div>
+    <div class="footer-nav">
+      <button class="btn-nav" onclick="goTo('home')">← Início</button>
+      <button class="btn-nav" onclick="goTo('index')">Índice</button>
+      <button class="btn-nav primary" onclick="goTo('ch1')">Ler Agora →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: INDEX ═══ -->
+<div id="page-index" class="page">
+  <div id="p-index" style="min-height:100vh;background:radial-gradient(ellipse 60% 50% at 20% 30%,rgba(10,20,50,0.8),transparent),radial-gradient(ellipse 60% 50% at 80% 70%,rgba(30,15,5,0.6),transparent),var(--dark3);padding:100px 40px 80px;">
+    <div class="index-container">
+      <div class="index-header">
+        <p class="index-header-label">Evangelho Místico Cristão · Livro 5</p>
+        <h2 class="index-header-title">Índice</h2>
+        <div class="index-divider"></div>
+        <p style="font-family:'IM Fell English',serif;font-size:15px;color:var(--text2);font-style:italic;">Cada capítulo é uma dimensão. Uma memória que retorna.</p>
+      </div>
+      <div class="index-chapters">
+        <div class="index-chapter" onclick="goTo('intro')">
+          <div class="index-ch-num">∞</div>
+          <div class="index-ch-content">
+            <p class="index-ch-label">Abertura</p>
+            <p class="index-ch-title">Livro 5 — Introdução</p>
+            <p class="index-ch-desc">Somos os 144 mil. O sonho que está terminando. O despertar que está próximo.</p>
+          </div>
+          <div class="index-ch-arrow">→</div>
+        </div>
+        <div class="index-chapter" onclick="goTo('ch1')">
+          <div class="index-ch-num">01</div>
+          <div class="index-ch-content">
+            <p class="index-ch-label">Capítulo Primeiro</p>
+            <p class="index-ch-title">A Bíblia Mística</p>
+            <p class="index-ch-desc">As Escrituras são vivas. Cada nome, cada data, cada evento é um símbolo espiritual. São metáforas!</p>
+          </div>
+          <div class="index-ch-arrow">→</div>
+        </div>
+        <div class="index-chapter" onclick="goTo('ch2')">
+          <div class="index-ch-num">02</div>
+          <div class="index-ch-content">
+            <p class="index-ch-label">Capítulo Segundo</p>
+            <p class="index-ch-title">Sonhei com Jacó e José</p>
+            <p class="index-ch-desc">Deus sonha através de todos nós. Cada emoção é uma cena. Cada relação é um espelho.</p>
+          </div>
+          <div class="index-ch-arrow">→</div>
+        </div>
+        <div class="index-chapter" onclick="goTo('ch3')">
+          <div class="index-ch-num">03</div>
+          <div class="index-ch-content">
+            <p class="index-ch-label">Capítulo Terceiro</p>
+            <p class="index-ch-title">Uma Noite Sonhei...</p>
+            <p class="index-ch-desc">Os quatro sonhos de Cristo. O encontro com Luz. O fim da Jornada na matéria.</p>
+          </div>
+          <div class="index-ch-arrow">→</div>
+        </div>
+        <div class="index-chapter" onclick="goTo('ch4')">
+          <div class="index-ch-num">04</div>
+          <div class="index-ch-content">
+            <p class="index-ch-label">Capítulo Quarto</p>
+            <p class="index-ch-title">Neville Goddard e os Sonhos de Cristo</p>
+            <p class="index-ch-desc">A Consciência fazendo o caminho de volta para a origem. O espírito lembrando que sempre foi Deus.</p>
+          </div>
+          <div class="index-ch-arrow">→</div>
+        </div>
+      </div>
+    </div>
+    <div class="chap-footer">
+      <span class="footer-brand">Emc³ · Jon Padilha</span>
+      <div class="footer-nav">
+        <button class="btn-nav" onclick="goTo('home')">← Início</button>
+        <button class="btn-nav primary" onclick="goTo('ch1')">Começar Leitura →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CH1 ═══ -->
+<div id="page-ch1" class="page chap-page" id="p-ch1" style="background:radial-gradient(ellipse 70% 50% at 50% 20%,#0d1525 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,#150a05 0%,transparent 50%),var(--dark);">
+  <div class="ch1-bg-runes">ד מ ש צ י א ה ב ג ל כ נ</div>
+  <div class="glow-orb glow-gold" style="width:600px;height:600px;top:-100px;left:30%;opacity:0.6;"></div>
+
+  <div class="chap-inner">
+    <div class="chap-header reveal">
+      <p class="chap-num">Capítulo 01</p>
+      <h2 class="chap-title">A Bíblia Mística</h2>
+      <span class="chap-star">✦</span>
+      <div class="chap-divider"></div>
+    </div>
+
+    <div class="chap-body wide">
+      <div>
+        <div class="reveal">
+          <p class="text-p">A Bíblia que conhecemos aqui no ocidente é uma cópia de cópia de cópias, contudo, não compromete a mensagem por trás do texto, pois essa mensagem vem da <strong style="color:var(--gold-l)">Consciência</strong> e está em todas as literaturas sagradas da humanidade.</p>
+          <p class="text-p">Muitos, ao despertar, rejeitam a Bíblia devido aos horrores que são vividos na interpretação literal religiosa.</p>
+          <p class="text-em">Eu também pensava assim, até a memória espiritual voltar a mim.</p>
+        </div>
+
+        <div class="cosmic-box reveal">
+          <p class="cosmic-text">Agora sei que as Escrituras são vivas e não apenas histórias, não apenas letras.</p>
+          <p class="cosmic-sub">Ela se cumpre em nós, através de sonhos e visões no interior. Nenhum evento ou personagem aconteceram aqui no nosso mundo terrestre.</p>
+        </div>
+
+        <div class="key-box reveal">
+          <p class="key-title">São metáforas!</p>
+          <p class="key-text">Cada nome de pessoa, animal, objeto, ser, data e eventos são códigos, símbolos que apontam para os seres espirituais que vieram ter uma experiência na matéria.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="reveal">
+          <p class="text-label">Esses seres são mencionados no Salmo 82:6-7</p>
+          <div class="scripture">
+            <p class="scripture-ref"><span class="scripture-icon">📖</span> Salmo 82:6-7</p>
+            <p class="scripture-text">"6 Eu disse: Vós sois deuses, e todos vós filhos do Altíssimo. 7 Todavia morrereis como homens, e caireis como qualquer dos príncipes."</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="margin-top:24px;">
+          <p class="text-label">E também em Gênesis 1:26</p>
+          <div class="scripture">
+            <p class="scripture-ref"><span class="scripture-icon">📖</span> Gênesis 1:26</p>
+            <p class="scripture-text">"26 Façamos o homem conforme nossa imagem e semelhança."</p>
+          </div>
+        </div>
+
+        <div class="scene-card reveal" style="margin-top:32px;">
+          <p class="scene-title">✦ A Mensagem Central</p>
+          <p class="scene-text">Você não é um humano buscando experiências espirituais. Você é um ser espiritual vivendo uma experiência humana — e a Bíblia é o mapa dessa jornada interior.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chap-footer">
+    <span class="footer-brand">Cap. 01 · A Bíblia Mística</span>
+    <div class="chap-progress">
+      <div class="prog-dot active" onclick="goTo('ch1')"></div>
+      <div class="prog-dot" onclick="goTo('ch2')"></div>
+      <div class="prog-dot" onclick="goTo('ch3')"></div>
+      <div class="prog-dot" onclick="goTo('ch4')"></div>
+    </div>
+    <div class="footer-nav">
+      <button class="btn-nav" onclick="goTo('index')">Índice</button>
+      <button class="btn-nav primary" onclick="goTo('ch2')">Próximo Capítulo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CH2 ═══ -->
+<div id="page-ch2" class="page chap-page" style="background:radial-gradient(ellipse 80% 50% at 30% 30%,#0a1020 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 70%,#120a05 0%,transparent 50%),var(--dark);">
+  <div class="glow-orb glow-gold" style="width:500px;height:500px;top:200px;right:-100px;opacity:0.5;"></div>
+
+  <div class="chap-inner">
+    <div class="chap-header reveal">
+      <p class="chap-num">Capítulo 02</p>
+      <h2 class="chap-title">Sonhei com a história<br>de Jacó e José</h2>
+      <span class="chap-star">✦</span>
+      <div class="chap-divider"></div>
+    </div>
+
+    <div class="chap-body">
+      <div>
+        <div class="scene-card reveal">
+          <p class="scene-title">🌙 O Sonho</p>
+          <p class="scene-text">Estava com minha família e meu pai estava aborrecido e foi bruto com meu filho.</p>
+        </div>
+        <div class="reveal">
+          <p class="text-p">Reagi com ódio agredindo meu pai e depois fiquei pressionando minha mãe para se separar dele.</p>
+          <p class="text-p">Passado isso, chegaram outras pessoas e uns jovens da igreja e um culto começou.</p>
+          <p class="text-p">No meio do culto, comecei a cantar e me envolver com aquela emoção até que todos sumiram e eu estava na escuridão cantando com toda alma para Deus.</p>
+        </div>
+
+        <div class="cosmic-box reveal">
+          <p class="cosmic-text">Como Jacó, eu atravessei o Rio do ego e das emoções e vi Deus face a face e me senti diferente.</p>
+        </div>
+
+        <div class="reveal">
+          <p class="text-p">Quando a música terminou, todos estavam em silêncio admirados e meus irmãos estavam com inveja. Meu pai estava tocado e quebrantado e veio falar comigo e eu o perdoei.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="reveal">
+          <p class="text-em">Assim como nas Escrituras, tudo isso que sonhei foi uma Metáfora. Todos em meu sonho são atores interpretando os roteiros do meu próprio ser. É uma forma de vermos a nós mesmos.</p>
+        </div>
+
+        <div class="scene-card reveal">
+          <p class="scene-title">🪞 O Espelho</p>
+          <p class="scene-text">A inveja dos meus irmãos me mostrou que eu sinto inveja quando critico pessoas na religião. Deus está sonhando todos os roteiros dentro de todas as pessoas. Então quando eu ataco pastores ou artistas evangélicos famosos na internet, na verdade, estou com inveja por eles estarem prósperos, só agora eu percebi.</p>
+        </div>
+
+        <div class="key-box reveal">
+          <p class="key-title">Nada é errado no Sonho da Vida</p>
+          <p class="key-text">Deus está sonhando que é todas as pessoas. Julgar alguém ou qualquer coisa é julgar a Deus...</p>
+        </div>
+
+        <div class="cosmic-box reveal">
+          <p class="cosmic-text">A vida é uma Grande Peça Cósmica onde Deus interpreta todos os atores nos roteiros do bem e do mal.</p>
+        </div>
+
+        <div class="reveal" style="margin-top:24px;">
+          <p class="text-label">O resumo de tudo</p>
+          <div class="scripture">
+            <p class="scripture-ref">✦ Síntese</p>
+            <p class="scripture-text">"Deus sonha através de todos nós. Cada emoção é uma cena. Cada relação é um espelho. O perdão é o final que transforma o roteiro. E o amor é o Autor que interpreta cada papel."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chap-footer">
+    <span class="footer-brand">Cap. 02 · Jacó e José</span>
+    <div class="chap-progress">
+      <div class="prog-dot" onclick="goTo('ch1')"></div>
+      <div class="prog-dot active" onclick="goTo('ch2')"></div>
+      <div class="prog-dot" onclick="goTo('ch3')"></div>
+      <div class="prog-dot" onclick="goTo('ch4')"></div>
+    </div>
+    <div class="footer-nav">
+      <button class="btn-nav" onclick="goTo('ch1')">← Capítulo 01</button>
+      <button class="btn-nav primary" onclick="goTo('ch3')">Próximo Capítulo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CH3 ═══ -->
+<div id="page-ch3" class="page chap-page" style="background:radial-gradient(ellipse 60% 60% at 50% 15%,#080d20 0%,transparent 50%),radial-gradient(ellipse 70% 40% at 20% 80%,#100810 0%,transparent 55%),var(--dark);">
+  <div class="glow-orb glow-blue" style="width:700px;height:700px;top:-200px;left:50%;transform:translateX(-50%);opacity:0.8;"></div>
+
+  <div class="chap-inner">
+    <div class="chap-header reveal">
+      <p class="chap-num">Capítulo 03</p>
+      <h2 class="chap-title">Uma Noite Sonhei...</h2>
+      <span class="chap-star">✦</span>
+      <div class="chap-divider"></div>
+    </div>
+
+    <div class="chap-body wide reveal">
+      <div>
+        <div class="scene-card">
+          <p class="scene-title">🏜 O Sonho</p>
+          <p class="scene-text">Estava com uma multidão num deserto do oriente... Todos estavam indo ver um Místico, estilo profeta da Bíblia para receber iniciação.</p>
+        </div>
+
+        <p class="text-p">Quando finalmente consegui chegar ao homem, toquei em seu ombro e, de alguma forma intuitiva, eu já sabia que ele se chamava Luz.</p>
+        <p class="text-p">Apenas com o olhar decidimos seguir o roteiro por causa das pessoas que estavam ali. Então ele tocou minha cabeça para me iniciar e cai desacordado.</p>
+
+        <div class="cosmic-box">
+          <p class="cosmic-text">Ele se virou pra mim e percebemos que éramos o mesmo SER.</p>
+          <p class="cosmic-sub">Foi uma emoção incrível.</p>
+        </div>
+
+        <p class="text-p">Ao cair, acordei aqui no nosso mundo.</p>
+
+        <div class="scripture">
+          <p class="scripture-ref">✦ Revelação</p>
+          <p class="scripture-text">"Vivi uma cena da Bíblia: o encontro de Jesus e João Batista."</p>
+        </div>
+
+        <div class="scene-card" style="margin-top:24px;">
+          <p class="scene-title">📖 Vejam, os mesmos padrões, as mesmas falas</p>
+          <p class="scene-text">A Bíblia não conta histórias que aconteceram com pessoas de verdade, são padrões da Consciência narrados em forma de mitologia.</p>
+        </div>
+
+        <p class="text-em">Quando a gente começa a ter sonhos, visões e experiências com as histórias e personagens da Bíblia, significa que estamos muito perto do fim da nossa Jornada no mundo da matéria.</p>
+      </div>
+
+      <div>
+        <p class="text-label" style="margin-bottom:24px;">Chegamos no final quando temos os quatro sonhos das experiências de Cristo — na ordem inversa:</p>
+
+        <div class="four-dreams">
+          <div class="dream-card">
+            <span class="dream-num">1</span>
+            <span class="dream-icon">☀️</span>
+            <p class="dream-title">A Ressureição</p>
+            <p class="dream-desc">O despertar do corpo de luz e o retorno à Consciência plena.</p>
+          </div>
+          <div class="dream-card">
+            <span class="dream-num">2</span>
+            <span class="dream-icon">✝️</span>
+            <p class="dream-title">A Crucificação</p>
+            <p class="dream-desc">A morte do ego, dos apegos e da identidade terrena.</p>
+          </div>
+          <div class="dream-card">
+            <span class="dream-num">3</span>
+            <span class="dream-icon">🕊</span>
+            <p class="dream-title">A Descida da Pomba</p>
+            <p class="dream-desc">O Espírito Santo descendo sobre a mente purificada e o coração aberto.</p>
+          </div>
+          <div class="dream-card">
+            <span class="dream-num">4</span>
+            <span class="dream-icon">⭐</span>
+            <p class="dream-title">O Nascimento da Criança</p>
+            <p class="dream-desc">O nascimento do Cristo Interior, a Consciência Pura encarnada.</p>
+          </div>
+        </div>
+
+        <div class="cosmic-box" style="margin-top:24px;">
+          <p class="cosmic-text">A Bíblia é um mapa interior.</p>
+          <p class="cosmic-sub">Os personagens são aspectos de nós mesmos. Deus é o roteirista e o ator de toda a peça. Quando entendemos isso, despertamos do sonho da matéria e voltamos para casa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chap-footer">
+    <span class="footer-brand">Cap. 03 · Uma Noite Sonhei</span>
+    <div class="chap-progress">
+      <div class="prog-dot" onclick="goTo('ch1')"></div>
+      <div class="prog-dot" onclick="goTo('ch2')"></div>
+      <div class="prog-dot active" onclick="goTo('ch3')"></div>
+      <div class="prog-dot" onclick="goTo('ch4')"></div>
+    </div>
+    <div class="footer-nav">
+      <button class="btn-nav" onclick="goTo('ch2')">← Capítulo 02</button>
+      <button class="btn-nav primary" onclick="goTo('ch4')">Próximo Capítulo →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CH4 ═══ -->
+<div id="page-ch4" class="page chap-page" style="background:radial-gradient(ellipse 80% 50% at 50% 10%,#0f1428 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 80% 80%,#10080a 0%,transparent 50%),var(--dark);">
+  <div class="glow-orb glow-gold" style="width:500px;height:500px;top:100px;left:-100px;opacity:0.5;"></div>
+
+  <div class="chap-inner">
+    <div class="chap-header reveal">
+      <p class="chap-num">Capítulo 04</p>
+      <h2 class="chap-title">Neville Goddard</h2>
+      <span class="chap-star">✦</span>
+      <div class="chap-divider"></div>
+    </div>
+
+    <div class="chap-body flip reveal">
+      <div>
+        <p class="text-em">Neville Goddard teve os quatro sonhos de Cristo 30 anos depois de ter sido chamado, em sonho, na Assembléia dos deuses descrita no Salmo 82.</p>
+
+        <div class="scripture">
+          <p class="scripture-ref"><span class="scripture-icon">📖</span> Salmo 82</p>
+          <p class="scripture-text">"Deus está na congregação dos poderosos; no meio dos deuses ele julga."</p>
+        </div>
+
+        <p class="text-p" style="margin-top:20px;">Após ter tido esses quatro sonhos, ele ainda viveu por três anos e meio dando palestras e contando esse mistério para o mundo.</p>
+
+        <div class="key-box">
+          <p class="key-title">O Padrão Bíblico</p>
+          <p class="key-text">Jesus começou seu ministério aos 30 e pregou por três anos e meio. São os 1260 dias do Apocalipse e um tempo, dois tempos e metade de um tempo de Daniel.</p>
+        </div>
+
+        <div class="text-block">
+          <div class="timeline">
+            <div class="timeline-items">
+              <div class="timeline-item">
+                <div class="timeline-content"><span class="timeline-label">30 anos</span>Início do ministério / chamado</div>
+                <div class="timeline-dot"></div>
+                <div style="flex:1"></div>
+              </div>
+              <div class="timeline-item">
+                <div style="flex:1"></div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-content" style="text-align:right"><span class="timeline-label">3 anos e meio</span>O ministério da Consciência</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-content"><span class="timeline-label">33,5 anos</span>Os quatro sonhos de Cristo</div>
+                <div class="timeline-dot"></div>
+                <div style="flex:1"></div>
+              </div>
+            </div>
+          </div>
+          <p class="text-label" style="text-align:center;">São metáforas! Tudo acontece e se cumpre dentro de nós, por meio de sonhos e visões.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="scene-card">
+          <p class="scene-title">⚡ Experiência de Quase Morte</p>
+          <p class="scene-text">Aos 12 anos, eu tive uma Experiência de Quase Morte durante seis minutos após uma severa crise de asma. Desci ao abismo da alma humana... e depois fui levado aos portões celestiais e recebi a missão de avisar ao mundo que Jesus voltará.</p>
+        </div>
+
+        <div class="scripture" style="margin-top:20px;">
+          <p class="scripture-ref"><span class="scripture-icon">📖</span> Efésios 4:9-10</p>
+          <p class="scripture-text">"Ora, que quer dizer 'subiu', senão que também havia descido às regiões inferiores da terra? Aquele que desceu é também o mesmo que subiu acima de todos os céus, para encher todas as coisas."</p>
+        </div>
+
+        <div class="cosmic-box" style="margin-top:24px;">
+          <p class="cosmic-text">Acredito que 30 anos depois, terei os quatro sonhos de Cristo.</p>
+        </div>
+
+        <div class="text-label" style="margin:24px 0 16px;">Os Quatro Sonhos de Cristo</div>
+        <div class="four-dreams">
+          <div class="dream-card"><span class="dream-num">1</span><p class="dream-title">A Ressureição</p></div>
+          <div class="dream-card"><span class="dream-num">2</span><p class="dream-title">A Crucificação</p></div>
+          <div class="dream-card"><span class="dream-num">3</span><p class="dream-title">A Descida da Pomba</p></div>
+          <div class="dream-card"><span class="dream-num">4</span><p class="dream-title">O Nascimento da Criança</p></div>
+        </div>
+
+        <div class="scripture" style="margin-top:20px;">
+          <p class="scripture-ref">✦ Conclusão</p>
+          <p class="scripture-text">"É a Consciência fazendo o caminho de volta para a origem. O espírito lembrando que sempre foi Deus."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chap-footer">
+    <span class="footer-brand">Cap. 04 · Neville Goddard — Fim do Livro 5</span>
+    <div class="chap-progress">
+      <div class="prog-dot" onclick="goTo('ch1')"></div>
+      <div class="prog-dot" onclick="goTo('ch2')"></div>
+      <div class="prog-dot" onclick="goTo('ch3')"></div>
+      <div class="prog-dot active" onclick="goTo('ch4')"></div>
+    </div>
+    <div class="footer-nav">
+      <button class="btn-nav" onclick="goTo('ch3')">← Capítulo 03</button>
+      <button class="btn-nav" onclick="goTo('index')">Índice</button>
+      <button class="btn-nav primary" onclick="goTo('home')">🏠 Início</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cur = document.getElementById('cursor');
+const curT = document.getElementById('cursor-trail');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+setInterval(()=>{curT.style.left=mx+'px';curT.style.top=my+'px';},80);
+document.querySelectorAll('button,a,[onclick]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='24px';cur.style.height='24px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';});
+});
+
+// ── STAR CANVAS ──
+const cv=document.getElementById('bg-canvas');
+const cx=cv.getContext('2d');
+let stars=[];
+function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+function initStars(){
+  stars=[];
+  const n=Math.floor(cv.width*cv.height/3500);
+  for(let i=0;i<n;i++){
+    stars.push({x:Math.random()*cv.width,y:Math.random()*cv.height,
+      r:Math.random()*1.4+0.1,ph:Math.random()*Math.PI*2,sp:Math.random()*0.006+0.001,
+      type:Math.random()<0.05?'cross':'dot'});
+  }
+}
+let t=0;
+function draw(){
+  t+=0.01;
+  cx.clearRect(0,0,cv.width,cv.height);
+  stars.forEach(s=>{
+    const a=0.2+0.6*Math.abs(Math.sin(s.ph+t*s.sp));
+    if(s.type==='cross'){
+      cx.strokeStyle=`rgba(232,201,122,${a*0.5})`;
+      cx.lineWidth=0.5;
+      cx.beginPath();cx.moveTo(s.x-4,s.y);cx.lineTo(s.x+4,s.y);cx.stroke();
+      cx.beginPath();cx.moveTo(s.x,s.y-4);cx.lineTo(s.x,s.y+4);cx.stroke();
+    } else {
+      cx.beginPath();cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(232,201,122,${a})`;cx.fill();
+    }
+  });
+  requestAnimationFrame(draw);
+}
+resize();initStars();draw();
+window.addEventListener('resize',()=>{resize();initStars();});
+
+// ── NAVIGATION ──
+const pages=['home','intro','index','ch1','ch2','ch3','ch4'];
+let current='home';
+
+function goTo(id){
+  document.getElementById('page-'+current).classList.remove('active');
+  document.getElementById('nl-'+current)?.classList.remove('active');
+  current=id;
+  const pg=document.getElementById('page-'+id);
+  pg.classList.add('active');
+  document.getElementById('nl-'+id)?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // trigger reveals
+  setTimeout(()=>checkReveal(),100);
+}
+
+// ── SCROLL REVEAL ──
+function checkReveal(){
+  document.querySelectorAll('#page-'+current+' .reveal').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight*0.92) el.classList.add('visible');
+  });
+}
+document.addEventListener('scroll',checkReveal,{passive:true});
+checkReveal();
+
+// KEYBOARD NAV
+const order=['home','intro','index','ch1','ch2','ch3','ch4'];
+document.addEventListener('keydown',e=>{
+  const i=order.indexOf(current);
+  if((e.key==='ArrowRight'||e.key==='ArrowDown')&&i<order.length-1) goTo(order[i+1]);
+  if((e.key==='ArrowLeft'||e.key==='ArrowUp')&&i>0) goTo(order[i-1]);
+});
+</script>
+</body>
+</html>
